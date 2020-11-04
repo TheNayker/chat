@@ -20,6 +20,7 @@ public class MessageServiceImpl implements MessageService {
 
     @Autowired
     public MessageServiceImpl(MessageRepository repository) {
+
         this.repository = repository;
     }
 
@@ -39,6 +40,33 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public Message send(String name, String content) {
         MessageEntity message = new MessageEntity();
+        message.setName(name);
+        message.setContent(content);
+        message.setCreatedAd(ZonedDateTime.now());
+
+        repository.save(message);
+
+        return Message.fromEntity(message);
+    }
+
+    @Override
+    public Message update(int id, String name, String content) {
+        MessageEntity message = new MessageEntity();
+        message.setId((long) id);
+        message.setName(name);
+        message.setContent(content);
+        message.setCreatedAd(ZonedDateTime.now());
+
+        repository.save(message);
+
+        return Message.fromEntity(message);
+
+    }
+
+    @Override
+    public Message delete(int id, String name, String content) {
+        MessageEntity message = new MessageEntity();
+        message.setId((long) id);
         message.setName(name);
         message.setContent(content);
         message.setCreatedAd(ZonedDateTime.now());
