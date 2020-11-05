@@ -1,7 +1,6 @@
 package com.example.chat.controller;
 
 import com.example.chat.dto.Message;
-import com.example.chat.entity.MessageEntity;
 import com.example.chat.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,31 +14,34 @@ public class ChatController {
 
     @Autowired
     public ChatController(MessageService service) {
-
         this.service = service;
     }
 
-    @GetMapping("/")
-    public Page<Message> index(@RequestParam(defaultValue = "0") int page) {
-
-        return service.paginateAll(page);
+    @GetMapping("/messages")
+    public Page<Message> getMessages(@RequestParam(defaultValue = "0") int page) {
+        return service.getMessages(page);
     }
 
-    @PostMapping("/send")
+    @PostMapping("/messages/send")
     public Message send(@RequestParam String name, @RequestParam String content) {
-
         return service.send(name, content);
     }
 
-    @PutMapping("/{id}")
-    public Message update(@PathVariable int id, @RequestParam String name, @RequestParam String content) {
-
+    @PutMapping("/messages/{id}")
+    public ResponseEntity<Message> update(
+            @PathVariable long id,
+            @RequestParam String name,
+            @RequestParam String content
+    ) {
         return service.update(id, name, content);
     }
 
-    @DeleteMapping("/{id}")
-    public Message delete(@PathVariable int id, @RequestParam String name, @RequestParam String content){
-
+    @DeleteMapping("/messages/{id}")
+    public ResponseEntity<String> delete(
+            @PathVariable long id,
+            @RequestParam String name,
+            @RequestParam String content
+    ) {
         return service.delete(id, name, content);
     }
 }

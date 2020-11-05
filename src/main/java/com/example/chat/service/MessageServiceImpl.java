@@ -7,9 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
+import java.util.NoSuchElementException;
 
 @Service
 public class MessageServiceImpl implements MessageService {
@@ -20,21 +23,18 @@ public class MessageServiceImpl implements MessageService {
 
     @Autowired
     public MessageServiceImpl(MessageRepository repository) {
-
         this.repository = repository;
     }
 
     @Override
-    public Page<Message> paginateAll(int page) {
-        return repository
-                .findAll(
-                        PageRequest.of(
-                                page,
-                                PER_PAGE,
-                                Sort.by(Sort.Direction.DESC, "createdAt")
-                        )
+    public Page<Message> getMessages(int page) {
+        return repository.findAll(
+                PageRequest.of(
+                        page,
+                        PER_PAGE,
+                        Sort.by(Sort.Direction.DESC, "createdAt")
                 )
-                .map(Message::fromEntity);
+        ).map(Message::fromEntity);
     }
 
     @Override
@@ -50,29 +50,23 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public Message update(int id, String name, String content) {
-        MessageEntity message = new MessageEntity();
-        message.setId((long) id);
-        message.setName(name);
-        message.setContent(content);
-        message.setCreatedAd(ZonedDateTime.now());
+    public ResponseEntity<Message> update(long id, String name, String content) {
+        try {
+            MessageEntity message = repository.findById((long) id).orElseThrow();
+            message.setName(name);
+            message.setContent(content);
 
-        repository.save(message);
+            repository.save(message);
 
-        return Message.fromEntity(message);
-
+            return new ResponseEntity<Message>(Message.fromEntity(message), HttpStatus.OK);
+        } catch (NoSuchElementException exception) {
+            return new ResponseEntity<Message>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override
-    public Message delete(int id, String name, String content) {
-        MessageEntity message = new MessageEntity();
-        message.setId((long) id);
-        message.setName(name);
-        message.setContent(content);
-        message.setCreatedAd(ZonedDateTime.now());
-
-        repository.save(message);
-
-        return Message.fromEntity(message);
+    public ResponseEntity<String> delete(long id, String name, String content) {
+        repository.deleteById(id);
+        return new ResponseEntity<String>(HttpStatus.OK);
     }
 }
