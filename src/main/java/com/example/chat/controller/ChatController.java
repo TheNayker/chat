@@ -17,31 +17,37 @@ public class ChatController {
         this.service = service;
     }
 
-    @GetMapping("/messages")
-    public Page<Message> getMessages(@RequestParam(defaultValue = "0") int page) {
+    @GetMapping("chat/messages")
+    public Page<Message> getMessages(
+            @RequestParam(value = "page", defaultValue = "0") int page
+    ) {
         return service.getMessages(page);
     }
 
-    @PostMapping("/messages/send")
-    public Message send(@RequestParam String name, @RequestParam String content) {
+    @PostMapping("chat/send")
+    public Message send(
+            @RequestParam("name") String name,
+            @RequestParam("content") String content
+    ) {
         return service.send(name, content);
     }
 
-    @PutMapping("/messages/{id}")
-    public ResponseEntity<Message> update(
-            @PathVariable long id,
-            @RequestParam String name,
-            @RequestParam String content
+    @PutMapping("chat/{id}")
+    public Message update(
+            @PathVariable("id") long id,
+            @RequestParam("name") String name,
+            @RequestParam("content") String content
     ) {
         return service.update(id, name, content);
     }
 
-    @DeleteMapping("/messages/{id}")
-    public ResponseEntity<String> delete(
-            @PathVariable long id,
-            @RequestParam String name,
-            @RequestParam String content
-    ) {
-        return service.delete(id, name, content);
+    @DeleteMapping("chat/{id}")
+    public ResponseEntity<String> delete(@PathVariable("id") long id) {
+        return service.delete(id);
+    }
+
+    @DeleteMapping("chat/messages")
+    public ResponseEntity<String> deleteAll() {
+        return service.deleteAll();
     }
 }

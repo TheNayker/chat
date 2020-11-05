@@ -42,7 +42,7 @@ public class MessageServiceImpl implements MessageService {
         MessageEntity message = new MessageEntity();
         message.setName(name);
         message.setContent(content);
-        message.setCreatedAd(ZonedDateTime.now());
+        message.setCreatedAt(ZonedDateTime.now());
 
         repository.save(message);
 
@@ -50,23 +50,31 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public ResponseEntity<Message> update(long id, String name, String content) {
-        try {
-            MessageEntity message = repository.findById((long) id).orElseThrow();
-            message.setName(name);
-            message.setContent(content);
+    public Message update(long id, String name, String content) {
+        MessageEntity message = repository.findById(id).orElseThrow();
+        message.setName(name);
+        message.setContent(content);
 
-            repository.save(message);
+        repository.save(message);
 
-            return new ResponseEntity<Message>(Message.fromEntity(message), HttpStatus.OK);
-        } catch (NoSuchElementException exception) {
-            return new ResponseEntity<Message>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return Message.fromEntity(message);
     }
 
     @Override
-    public ResponseEntity<String> delete(long id, String name, String content) {
+    public ResponseEntity<String> delete(long id) {
         repository.deleteById(id);
-        return new ResponseEntity<String>(HttpStatus.OK);
+        return new ResponseEntity<String>(
+                "Message with id { " + id + " } was deleted",
+                HttpStatus.OK
+        );
+    }
+
+    @Override
+    public ResponseEntity<String> deleteAll() {
+        repository.deleteAll();
+        return new ResponseEntity<String>(
+                "All were deleted",
+                HttpStatus.OK
+        );
     }
 }

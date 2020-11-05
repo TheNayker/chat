@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 public interface MessageService {
     Page<Message> getMessages(int page);
     Message send(String name, String content);
-    ResponseEntity<Message> update(long id, String name, String content);
-    ResponseEntity<String> delete(long id, String name, String content);
+    Message update(long id, String name, String content);
+    ResponseEntity<String> delete(long id);
+    ResponseEntity<String> deleteAll();
 }

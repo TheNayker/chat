@@ -15,6 +15,5 @@ public class MessageEntity {
     private Long id;
     private String name;
     private String content;
-    private ZonedDateTime createdAd;
-
+    private ZonedDateTime createdAt;
 }

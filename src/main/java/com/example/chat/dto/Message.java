@@ -11,16 +11,15 @@ public class Message {
     private Long id;
     private String name;
     private String content;
-    private ZonedDateTime createdAd;
+    private ZonedDateTime createdAt;
 
     public static Message fromEntity(MessageEntity entity) {
         Message message = new Message();
         message.setId(entity.getId());
         message.setName(entity.getName());
         message.setContent(entity.getContent());
-        message.setCreatedAd(entity.getCreatedAd());
+        message.setCreatedAt(entity.getCreatedAt());
 
         return message;
     }
-
 }
