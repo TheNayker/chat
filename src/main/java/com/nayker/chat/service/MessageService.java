@@ -1,13 +1,13 @@
-package com.example.chat.service;
+package com.nayker.chat.service;
 
-import com.example.chat.dto.Message;
+import com.nayker.chat.dto.Message;
 import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
+
 
 public interface MessageService {
     Page<Message> getMessages(int page);
     Message send(String name, String content);
     Message update(long id, String name, String content);
-    ResponseEntity<String> delete(long id);
-    ResponseEntity<String> deleteAll();
+    void delete(long id);
+    void deleteAll();
 }

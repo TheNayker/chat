@@ -1,6 +1,6 @@
-package com.example.chat.dto;
+package com.nayker.chat.dto;
 
-import com.example.chat.entity.MessageEntity;
+import com.nayker.chat.entity.MessageEntity;
 import lombok.Data;
 
 import java.time.ZonedDateTime;

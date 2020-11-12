@@ -1,18 +1,16 @@
-package com.example.chat.service;
+package com.nayker.chat.service;
 
-import com.example.chat.dto.Message;
-import com.example.chat.entity.MessageEntity;
-import com.example.chat.repository.MessageRepository;
+import com.nayker.chat.dto.Message;
+import com.nayker.chat.entity.MessageEntity;
+import com.nayker.chat.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.ZonedDateTime;
-import java.util.NoSuchElementException;
 
 @Service
 public class MessageServiceImpl implements MessageService {
@@ -51,7 +49,9 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public Message update(long id, String name, String content) {
-        MessageEntity message = repository.findById(id).orElseThrow();
+        MessageEntity message = repository.findById(id).orElseThrow(()  ->
+                new EntityNotFoundException("Message not found")
+        );
         message.setName(name);
         message.setContent(content);
 
@@ -61,20 +61,12 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public ResponseEntity<String> delete(long id) {
+    public void delete(long id) {
         repository.deleteById(id);
-        return new ResponseEntity<String>(
-                "Message with id { " + id + " } was deleted",
-                HttpStatus.OK
-        );
     }
 
     @Override
-    public ResponseEntity<String> deleteAll() {
+    public void deleteAll() {
         repository.deleteAll();
-        return new ResponseEntity<String>(
-                "All were deleted",
-                HttpStatus.OK
-        );
     }
 }

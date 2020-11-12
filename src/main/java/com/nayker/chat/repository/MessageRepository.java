@@ -1,6 +1,6 @@
-package com.example.chat.repository;
+package com.nayker.chat.repository;
 
-import com.example.chat.entity.MessageEntity;
+import com.nayker.chat.entity.MessageEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

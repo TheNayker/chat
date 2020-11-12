@@ -1,4 +1,4 @@
-package com.example.chat.entity;
+package com.nayker.chat.entity;
 
 import lombok.Data;
 
