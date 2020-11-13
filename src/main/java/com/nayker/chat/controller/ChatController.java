@@ -22,14 +22,14 @@ public class ChatController {
         this.service = service;
     }
 
-    @GetMapping("{/id}")
+    @GetMapping("/")
     public Page<Message> getMessages(
             @RequestParam(value = "page", defaultValue = "0") int page
     ) {
         return service.getMessages(page);
     }
 
-    @PostMapping("{/id}")
+    @PostMapping("/")
     public Message send(@Valid @RequestBody MessageRequest messageRequest
     ) {
         return service.send(messageRequest.name, messageRequest.content);
@@ -49,7 +49,7 @@ public class ChatController {
          return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/")
     public ResponseEntity<String> deleteAll() {
         service.deleteAll();
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
