@@ -14,6 +14,7 @@ public class MessageEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
-    private String content;
+    private String message;
+    private String messageCensure;
     private ZonedDateTime createdAt;
 }
