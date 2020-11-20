@@ -1,7 +1,7 @@
 package com.nayker.chat.controller;
 
 import com.nayker.chat.dto.Message;
-import com.nayker.chat.entity.MessageRequest;
+import com.nayker.chat.form.MessageRequest;
 import com.nayker.chat.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,9 +30,8 @@ public class ChatController {
     }
 
     @PostMapping("/")
-    public Message send(@Valid @RequestBody MessageRequest messageRequest
-    ) {
-        return service.send(messageRequest.name, messageRequest.content);
+    public Message send(@Valid @RequestBody MessageRequest messageRequest) {
+        return service.send(messageRequest.getName(), messageRequest.getContent());
     }
 
     @PutMapping("/{id}")
@@ -40,18 +39,20 @@ public class ChatController {
             @PathVariable("id") long id,
             @Valid @RequestBody MessageRequest messageRequest
     ) {
-        return service.update(id, messageRequest.name, messageRequest.content);
+        return service.update(id, messageRequest.getName(), messageRequest.getContent());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable("id") long id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") long id) {
          service.delete(id);
+
          return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/")
-    public ResponseEntity<String> deleteAll() {
+    public ResponseEntity<Void> deleteAll() {
         service.deleteAll();
+
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
