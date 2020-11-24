@@ -24,7 +24,7 @@ public class DictionaryServiceImpl implements DictionaryService {
     }
 
     @Override
-    public void addDictionaryWord(String word){
+    public void addDictionaryWord(String word) {
         var dictionary = new DictionaryWordEntity();
         dictionary.setWord(word);
         repository.save(dictionary);
@@ -33,8 +33,10 @@ public class DictionaryServiceImpl implements DictionaryService {
     @Override
     public void updateDictionaryWord(long id, String word) {
         var dictionary = repository.findById(id).orElseThrow(() ->
-                new EntityNotFoundException("Word not found")
-        );
+                new EntityNotFoundException("Word not found"));
+        dictionary.setWord(word);
+        repository.save(dictionary);
+
     }
 
     @Override
