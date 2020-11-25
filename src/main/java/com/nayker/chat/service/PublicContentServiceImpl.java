@@ -4,6 +4,7 @@ import com.nayker.chat.entity.DictionaryWordEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.regex.Pattern;
 
 
 @Service
@@ -21,7 +22,9 @@ public class PublicContentServiceImpl implements PublicContentService {
         var dictionaryList = service.getDictionary();
 
         for (DictionaryWordEntity dictionary : dictionaryList) {
-            message = message.replace(dictionary.getWord(), "*");
+            message = Pattern.compile(dictionary.getWord(),
+                    Pattern.CASE_INSENSITIVE).matcher(message).replaceAll("*");
+
         }
 
         return message;

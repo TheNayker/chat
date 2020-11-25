@@ -6,9 +6,7 @@ import com.nayker.chat.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 
 @RestController
@@ -43,16 +41,14 @@ public class ChatController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable("id") long id) {
-         service.delete(id);
-
-         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable("id") long id) {
+        service.delete(id);
     }
 
     @DeleteMapping("/")
-    public ResponseEntity<Void> deleteAll() {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteAll() {
         service.deleteAll();
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
