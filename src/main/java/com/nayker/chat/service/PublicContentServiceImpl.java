@@ -22,7 +22,7 @@ public class PublicContentServiceImpl implements PublicContentService {
         var dictionaryList = service.getDictionary();
 
         for (DictionaryWordEntity dictionary : dictionaryList) {
-            message = Pattern.compile(dictionary.getWord(),
+            message = Pattern.compile(Pattern.quote(dictionary.getWord()),
                     Pattern.CASE_INSENSITIVE).matcher(message).replaceAll("*");
 
         }

@@ -12,10 +12,12 @@ import java.util.List;
 public class DictionaryServiceImpl implements DictionaryService {
 
     private final DictionaryRepository repository;
+    private final PublicContentService publicContentService;
 
     @Autowired
-    public DictionaryServiceImpl(DictionaryRepository repository) {
+    public DictionaryServiceImpl(DictionaryRepository repository, PublicContentService publicContentService) {
         this.repository = repository;
+        this.publicContentService = publicContentService;
     }
 
     @Override
@@ -27,6 +29,7 @@ public class DictionaryServiceImpl implements DictionaryService {
     public void addDictionaryWord(String word) {
         var dictionary = new DictionaryWordEntity();
         dictionary.setWord(word);
+        dictionary.setWord(publicContentService.getPublicContent(word));
         repository.save(dictionary);
     }
 
@@ -35,6 +38,7 @@ public class DictionaryServiceImpl implements DictionaryService {
         var dictionary = repository.findById(id).orElseThrow(() ->
                 new EntityNotFoundException("Word not found"));
         dictionary.setWord(word);
+        dictionary.setWord(publicContentService.getPublicContent(word));
         repository.save(dictionary);
 
     }
@@ -42,6 +46,7 @@ public class DictionaryServiceImpl implements DictionaryService {
     @Override
     public void deleteDictionaryWord(long id) {
         repository.deleteById(id);
+        getDictionary();
     }
 
     @Override
