@@ -3,6 +3,7 @@ package com.nayker.chat.service;
 import com.nayker.chat.entity.DictionaryWordEntity;
 import com.nayker.chat.repository.DictionaryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -12,15 +13,14 @@ import java.util.List;
 public class DictionaryServiceImpl implements DictionaryService {
 
     private final DictionaryRepository repository;
-    private final PublicContentService publicContentService;
 
     @Autowired
-    public DictionaryServiceImpl(DictionaryRepository repository, PublicContentService publicContentService) {
+    public DictionaryServiceImpl(DictionaryRepository repository) {
         this.repository = repository;
-        this.publicContentService = publicContentService;
     }
 
     @Override
+    @Cacheable("dictionary list")
     public List<DictionaryWordEntity> getDictionary() {
         return repository.findAll();
     }
@@ -29,7 +29,6 @@ public class DictionaryServiceImpl implements DictionaryService {
     public void addDictionaryWord(String word) {
         var dictionary = new DictionaryWordEntity();
         dictionary.setWord(word);
-        dictionary.setWord(publicContentService.getPublicContent(word));
         repository.save(dictionary);
     }
 
@@ -38,7 +37,6 @@ public class DictionaryServiceImpl implements DictionaryService {
         var dictionary = repository.findById(id).orElseThrow(() ->
                 new EntityNotFoundException("Word not found"));
         dictionary.setWord(word);
-        dictionary.setWord(publicContentService.getPublicContent(word));
         repository.save(dictionary);
 
     }
@@ -46,7 +44,7 @@ public class DictionaryServiceImpl implements DictionaryService {
     @Override
     public void deleteDictionaryWord(long id) {
         repository.deleteById(id);
-        getDictionary();
+
     }
 
     @Override
