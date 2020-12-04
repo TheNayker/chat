@@ -3,6 +3,7 @@ package com.nayker.chat.service;
 import com.nayker.chat.entity.DictionaryWordEntity;
 import com.nayker.chat.repository.DictionaryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,7 @@ public class DictionaryServiceImpl implements DictionaryService {
     }
 
     @Override
+    @CacheEvict("word")
     public void addDictionaryWord(String word) {
         var dictionary = new DictionaryWordEntity();
         dictionary.setWord(word);
@@ -33,6 +35,7 @@ public class DictionaryServiceImpl implements DictionaryService {
     }
 
     @Override
+    @CacheEvict("word")
     public void updateDictionaryWord(long id, String word) {
         var dictionary = repository.findById(id).orElseThrow(() ->
                 new EntityNotFoundException("Word not found"));
@@ -42,6 +45,7 @@ public class DictionaryServiceImpl implements DictionaryService {
     }
 
     @Override
+    @CacheEvict("word")
     public void deleteDictionaryWord(long id) {
         repository.deleteById(id);
 
