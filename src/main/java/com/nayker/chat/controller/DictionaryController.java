@@ -1,6 +1,6 @@
 package com.nayker.chat.controller;
 
-import com.nayker.chat.entity.DictionaryWordEntity;
+import com.nayker.chat.dto.Dictionary;
 import com.nayker.chat.form.DictionaryWordRequest;
 import com.nayker.chat.service.DictionaryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,21 +22,21 @@ public class DictionaryController {
     }
 
     @GetMapping("/")
-    public List<DictionaryWordEntity> getDictionary() {
+    public List<Dictionary> getDictionary() {
         return service.getDictionary();
     }
 
     @PostMapping("/")
-    public void addDictionary(
+    public Dictionary addDictionary(
             @Valid @RequestBody DictionaryWordRequest request) {
-        service.addDictionaryWord(request.getWord());
+        return service.addDictionaryWord(request.getWord());
     }
 
     @PutMapping("/{id}")
-    public void updateDictionary(
+    public Dictionary updateDictionary(
             @PathVariable("id") long id,
            @Valid @RequestBody DictionaryWordRequest request) {
-         service.updateDictionaryWord(id, request.getWord());
+         return service.updateDictionaryWord(id, request.getWord());
     }
 
 

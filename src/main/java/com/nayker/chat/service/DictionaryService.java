@@ -1,14 +1,14 @@
 package com.nayker.chat.service;
 
 
-import com.nayker.chat.entity.DictionaryWordEntity;
+import com.nayker.chat.dto.Dictionary;
 
 import java.util.List;
 
 public interface DictionaryService {
-    List<DictionaryWordEntity> getDictionary();
-    void addDictionaryWord(String word);
-    void updateDictionaryWord(long id, String word);
+    List<Dictionary> getDictionary();
+    Dictionary addDictionaryWord(String word);
+    Dictionary updateDictionaryWord(long id, String word);
     void deleteDictionaryWord(long id);
     void deleteAll();
 }
