@@ -21,7 +21,10 @@ public class MessageServiceImpl implements MessageService {
     private final PublicContentService publicContentService;
 
     @Autowired
-    public MessageServiceImpl(MessageRepository repository, PublicContentService publicContentService) {
+    public MessageServiceImpl(
+            MessageRepository repository,
+            PublicContentService publicContentService
+    ) {
         this.repository = repository;
         this.publicContentService = publicContentService;
     }
@@ -73,5 +76,15 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public void deleteAll() {
         repository.deleteAll();
+    }
+
+    @Override
+    public void invalidateMessages() {
+        repository.findAll().forEach(message -> {
+
+            message.setContent(publicContentService.getPublicContent(message.getOriginalContent()));
+
+            repository.save(message);
+        });
     }
 }

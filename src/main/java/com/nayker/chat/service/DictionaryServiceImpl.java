@@ -1,9 +1,9 @@
 package com.nayker.chat.service;
 
-import com.nayker.chat.dto.Dictionary;
+import com.nayker.chat.dto.DictionaryWord;
 import com.nayker.chat.entity.DictionaryWordEntity;
+import com.nayker.chat.publisher.DictionaryPublisher;
 import com.nayker.chat.repository.DictionaryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -16,40 +16,46 @@ import java.util.stream.Collectors;
 public class DictionaryServiceImpl implements DictionaryService {
 
     private final DictionaryRepository repository;
+    private final DictionaryPublisher publisher;
 
-    @Autowired
-    public DictionaryServiceImpl(DictionaryRepository repository) {
+    public DictionaryServiceImpl(DictionaryRepository repository, DictionaryPublisher publisher) {
         this.repository = repository;
+        this.publisher = publisher;
     }
 
     @Override
     @Cacheable("dictionary-list")
-    public List<Dictionary> getDictionary() {
+    public List<DictionaryWord> getDictionary() {
         return repository.findAll()
                 .stream()
-                .map(Dictionary::fromEntity)
+                .map(DictionaryWord::fromEntity)
                 .collect(Collectors.toList());
     }
 
     @Override
     @CacheEvict("dictionary-list")
-    public Dictionary addDictionaryWord(String word) {
+    public DictionaryWord addDictionaryWord(String word) {
         var dictionary = new DictionaryWordEntity();
         dictionary.setWord(word);
         repository.save(dictionary);
 
-        return Dictionary.fromEntity(dictionary);
+        publisher.publishChangedEvent();
+
+        return DictionaryWord.fromEntity(dictionary);
     }
 
     @Override
     @CacheEvict("dictionary-list")
-    public Dictionary updateDictionaryWord(long id, String word) {
+    public DictionaryWord updateDictionaryWord(long id, String word) {
         var dictionary = repository.findById(id).orElseThrow(() ->
                 new EntityNotFoundException("Word not found"));
+
         dictionary.setWord(word);
         repository.save(dictionary);
 
-        return Dictionary.fromEntity(dictionary);
+        publisher.publishChangedEvent();
+
+        return DictionaryWord.fromEntity(dictionary);
     }
 
     @Override
@@ -57,11 +63,14 @@ public class DictionaryServiceImpl implements DictionaryService {
     public void deleteDictionaryWord(long id) {
         repository.deleteById(id);
 
+        publisher.publishChangedEvent();
     }
 
     @Override
     public void deleteAll() {
         repository.deleteAll();
+
+        publisher.publishChangedEvent();
     }
 
 }

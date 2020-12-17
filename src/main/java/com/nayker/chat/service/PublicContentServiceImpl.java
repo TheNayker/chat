@@ -1,6 +1,6 @@
 package com.nayker.chat.service;
 
-import com.nayker.chat.dto.Dictionary;
+import com.nayker.chat.dto.DictionaryWord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +21,8 @@ public class PublicContentServiceImpl implements PublicContentService {
     public String getPublicContent(String message) {
         var dictionaryList = service.getDictionary();
 
-        for (Dictionary dictionary : dictionaryList) {
-            message = Pattern.compile(Pattern.quote(dictionary.getWord()),
+        for (DictionaryWord dictionaryWord : dictionaryList) {
+            message = Pattern.compile(Pattern.quote(dictionaryWord.getWord()),
                     Pattern.CASE_INSENSITIVE).matcher(message).replaceAll("*");
 
         }
