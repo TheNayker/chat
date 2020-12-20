@@ -33,7 +33,7 @@ public class DictionaryServiceImpl implements DictionaryService {
     }
 
     @Override
-    @CacheEvict("dictionary-list")
+    @CacheEvict(value = "dictionary-list", allEntries = true, beforeInvocation = true)
     public DictionaryWord addDictionaryWord(String word) {
         var dictionary = new DictionaryWordEntity();
         dictionary.setWord(word);
@@ -45,7 +45,7 @@ public class DictionaryServiceImpl implements DictionaryService {
     }
 
     @Override
-    @CacheEvict("dictionary-list")
+    @CacheEvict(value = "dictionary-list", allEntries = true, beforeInvocation = true)
     public DictionaryWord updateDictionaryWord(long id, String word) {
         var dictionary = repository.findById(id).orElseThrow(() ->
                 new EntityNotFoundException("Word not found"));
@@ -59,7 +59,7 @@ public class DictionaryServiceImpl implements DictionaryService {
     }
 
     @Override
-    @CacheEvict("dictionary-list")
+    @CacheEvict(value = "dictionary-list", allEntries = true, beforeInvocation = true)
     public void deleteDictionaryWord(long id) {
         repository.deleteById(id);
 
@@ -67,6 +67,7 @@ public class DictionaryServiceImpl implements DictionaryService {
     }
 
     @Override
+    @CacheEvict(value = "dictionary-list", allEntries = true, beforeInvocation = true)
     public void deleteAll() {
         repository.deleteAll();
 
