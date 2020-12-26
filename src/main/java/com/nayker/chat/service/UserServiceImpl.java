@@ -1,15 +1,12 @@
 package com.nayker.chat.service;
 
 import com.nayker.chat.dto.User;
+import com.nayker.chat.entity.UserEntity;
+import com.nayker.chat.error.AuthException;
 import com.nayker.chat.repository.UserRepository;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -23,19 +20,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Cacheable("users")
-    public List<User> getUsers() {
-        return repository.findAll()
-                .stream()
-                .map(User::fromEntity)
-                .collect(Collectors.toList());
-    }
+    public User addUser(String username, String email, String password) {
+        if (repository.existsByUsername(username)) {
+            throw new AuthException("Username already exists");
+        }
 
-    @Override
-    @CacheEvict(value = "users", allEntries = true, beforeInvocation = true)
-    public User addUsers(String username, String email, String password)
-            throws UsernameNotFoundException {
-        var user = repository.findByUsername(username);
+        var user = new UserEntity();
         user.setUsername(username);
         user.setEmail(email);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
