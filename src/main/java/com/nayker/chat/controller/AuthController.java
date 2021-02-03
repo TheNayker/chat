@@ -2,7 +2,9 @@ package com.nayker.chat.controller;
 
 
 import com.nayker.chat.error.AuthException;
+import com.nayker.chat.form.AuthenticationRequest;
 import com.nayker.chat.form.UserRequest;
+import com.nayker.chat.resource.AuthenticatedResource;
 import com.nayker.chat.resource.ErrorResource;
 import com.nayker.chat.resource.UserResource;
 import com.nayker.chat.service.UserService;
@@ -14,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
 
     private final UserService service;
@@ -28,8 +30,13 @@ public class AuthController {
     @ResponseStatus(code = HttpStatus.CREATED)
     public UserResource register(@Valid @RequestBody UserRequest request) {
         return UserResource.fromDto(
-                service.addUser(request.getUsername(), request.getEmail(), request.getPassword())
+                service.addUser(request.getUsername(), request.getPassword())
         );
+    }
+
+    @PostMapping("/login")
+    public AuthenticatedResource authenticate(@Valid @RequestBody AuthenticationRequest request){
+        return service.loginUser(request);
     }
 
     @ExceptionHandler

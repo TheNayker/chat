@@ -1,8 +1,10 @@
-package com.nayker.chat.service;
+package com.nayker.chat.service.Impl;
 
 import com.nayker.chat.dto.Message;
 import com.nayker.chat.entity.MessageEntity;
 import com.nayker.chat.repository.MessageRepository;
+import com.nayker.chat.service.MessageService;
+import com.nayker.chat.service.PublicContentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

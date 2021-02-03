@@ -1,9 +1,10 @@
-package com.nayker.chat.service;
+package com.nayker.chat.service.Impl;
 
 import com.nayker.chat.dto.DictionaryWord;
 import com.nayker.chat.entity.DictionaryWordEntity;
 import com.nayker.chat.publisher.DictionaryPublisher;
 import com.nayker.chat.repository.DictionaryRepository;
+import com.nayker.chat.service.DictionaryService;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;

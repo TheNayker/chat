@@ -7,13 +7,11 @@ import lombok.Data;
 public class UserResource {
     private Long id;
     private String username;
-    private String email;
 
     public static UserResource fromDto(User user) {
         var resource = new UserResource();
         resource.setId(user.getId());
         resource.setUsername(user.getUsername());
-        resource.setEmail(user.getEmail());
 
         return resource;
     }

@@ -1,0 +1,13 @@
+{
+  "properties": [
+    {
+      "name": "security.jwt.secretKey",
+      "type": "javax.crypto.SecretKey",
+      "description": "Description for security.jwt.secretKey."
+    },
+    {
+      "name": "security.jwt.expiredTime",
+      "type": "java.time.Duration",
+      "description": "Description for security.jwt.expiatedTime."
+    }
+  ] }

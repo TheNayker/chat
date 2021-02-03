@@ -1,6 +1,8 @@
-package com.nayker.chat.service;
+package com.nayker.chat.service.Impl;
 
 import com.nayker.chat.dto.DictionaryWord;
+import com.nayker.chat.service.DictionaryService;
+import com.nayker.chat.service.PublicContentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

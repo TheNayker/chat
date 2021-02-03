@@ -14,6 +14,5 @@ public class UserEntity {
     private Long id;
     @Column(name = "username", unique = true)
     private String username;
-    private String email;
     private String password;
 }
