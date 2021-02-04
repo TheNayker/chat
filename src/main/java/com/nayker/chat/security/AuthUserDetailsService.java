@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Collections;
 
 @Service
@@ -26,8 +25,8 @@ public class AuthUserDetailsService implements AuthenticationUserDetailsService<
     @Override
     public UserDetails loadUserDetails(PreAuthenticatedAuthenticationToken token) throws UsernameNotFoundException {
         var user = service.findByUsername(provider.getUsername(token.getName())).orElseThrow(() ->
-                new EntityNotFoundException("User not found"));
+                new UsernameNotFoundException("User not found"));
 
-        return new User(user.getUsername(), user.getPassword(), Collections.emptyList());
+        return new User(user.getUsername(), " ", Collections.emptyList());
     }
 }

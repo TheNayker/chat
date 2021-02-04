@@ -1,11 +1,10 @@
 package com.nayker.chat.service.Impl;
 
+import com.nayker.chat.dto.Jwt;
 import com.nayker.chat.dto.User;
 import com.nayker.chat.entity.UserEntity;
 import com.nayker.chat.error.AuthException;
-import com.nayker.chat.form.AuthenticationRequest;
 import com.nayker.chat.repository.UserRepository;
-import com.nayker.chat.resource.AuthenticatedResource;
 import com.nayker.chat.security.JwtTokenProvider;
 import com.nayker.chat.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -43,15 +42,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public AuthenticatedResource loginUser(AuthenticationRequest request) throws AuthException {
-        var user = repository.findByUsername(request.getUsername()).orElseThrow(() ->
+    public Jwt loginUser(String username, String password) throws AuthException {
+        var user = repository.findByUsername(username).orElseThrow(() ->
                 new AuthException("User not found"));
-        if (!passwordEncoder.matches(request.getPassword(),user.getPassword())) {
+        if (!passwordEncoder.matches(password, user.getPassword())) {
                 throw new AuthException("Invalid password");
         }
-        String token = provider.createToken(request.getUsername());
+        String token = provider.createToken(username);
 
-        return new AuthenticatedResource(token);
+        return new Jwt(token);
     }
 
     @Override

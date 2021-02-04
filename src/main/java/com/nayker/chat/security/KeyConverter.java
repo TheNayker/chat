@@ -14,7 +14,11 @@ import javax.crypto.SecretKey;
 public class KeyConverter implements Converter<String, SecretKey>{
 
     @Override
-    public SecretKey convert(String secretKey) {
-        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
+    public SecretKey convert(String secretKey) throws IllegalArgumentException {
+        try {
+           return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Password not convert");
+        }
     }
 }

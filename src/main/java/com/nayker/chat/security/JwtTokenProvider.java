@@ -2,10 +2,7 @@ package com.nayker.chat.security;
 
 
 import com.nayker.chat.config.jwt.JwtProperties;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtParser;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -39,7 +36,11 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public String getUsername(String token) {
-        return jwtParser.setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+    public String getUsername(String token) throws JwtException {
+        try {
+           return jwtParser.parseClaimsJws(token).getBody().getSubject();
+        } catch (JwtException e) {
+            throw new JwtException("Token invalid");
+        }
     }
 }

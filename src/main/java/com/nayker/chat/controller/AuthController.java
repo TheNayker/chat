@@ -36,7 +36,9 @@ public class AuthController {
 
     @PostMapping("/login")
     public AuthenticatedResource authenticate(@Valid @RequestBody AuthenticationRequest request){
-        return service.loginUser(request);
+        return AuthenticatedResource.fromDto(
+                service.loginUser(request.getUsername(), request.getPassword())
+        );
     }
 
     @ExceptionHandler
