@@ -1,7 +1,6 @@
 package com.nayker.chat.validator;
 
 
-import com.nayker.chat.config.ValidatorConfig;
 import org.passay.PasswordData;
 import org.passay.PasswordValidator;
 import org.passay.RuleResult;
@@ -14,8 +13,8 @@ public class PasswordConstrainValidator implements ConstraintValidator<PasswordC
 
     private final PasswordValidator validator;
 
-    public PasswordConstrainValidator(ValidatorConfig config) {
-        this.validator = config.PasswordValidator();
+    public PasswordConstrainValidator(PasswordValidator validator) {
+        this.validator = validator;
     }
 
     public void initialize(PasswordConstrain constrain) {

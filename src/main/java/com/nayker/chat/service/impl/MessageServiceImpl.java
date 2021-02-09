@@ -1,4 +1,4 @@
-package com.nayker.chat.service.Impl;
+package com.nayker.chat.service.impl;
 
 import com.nayker.chat.dto.Message;
 import com.nayker.chat.entity.MessageEntity;
@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -43,9 +44,9 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public Message send(String name, String content) {
+    public Message send(UserDetails author, String content) {
         MessageEntity message = new MessageEntity();
-        message.setName(name);
+        message.setName(author.getUsername());
         message.setOriginalContent(content);
         message.setContent(publicContentService.getPublicContent(content));
         message.setCreatedAt(ZonedDateTime.now());
@@ -56,12 +57,11 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public Message update(long id, String name, String content) {
+    public Message update(long id, String content) {
         MessageEntity message = repository.findById(id).orElseThrow(() ->
                 new EntityNotFoundException("Message not found")
         );
 
-        message.setName(name);
         message.setOriginalContent(content);
         message.setContent(publicContentService.getPublicContent(content));
 

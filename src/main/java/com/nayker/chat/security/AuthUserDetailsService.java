@@ -24,7 +24,7 @@ public class AuthUserDetailsService implements AuthenticationUserDetailsService<
 
     @Override
     public UserDetails loadUserDetails(PreAuthenticatedAuthenticationToken token) throws UsernameNotFoundException {
-        var user = service.findByUsername(provider.getUsername(token.getName())).orElseThrow(() ->
+        var user = service.findByUsername(provider.getUsername(token.getName().substring(7))).orElseThrow(() ->
                 new UsernameNotFoundException("User not found"));
 
         return new User(user.getUsername(), " ", Collections.emptyList());

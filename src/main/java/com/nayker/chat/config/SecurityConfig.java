@@ -41,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(authenticationProvider());
     }
 
@@ -56,7 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected RequestHeaderAuthenticationFilter authenticationFilter() throws Exception {
         RequestHeaderAuthenticationFilter filter = new RequestHeaderAuthenticationFilter();
         filter.setAuthenticationManager(authenticationManager());
-        filter.setPrincipalRequestHeader("Authentication");
+        filter.setPrincipalRequestHeader("Authorization");
         filter.setExceptionIfHeaderMissing(false);
         return filter;
     }

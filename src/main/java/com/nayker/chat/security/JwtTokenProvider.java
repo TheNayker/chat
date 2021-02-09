@@ -2,6 +2,7 @@ package com.nayker.chat.security;
 
 
 import com.nayker.chat.config.jwt.JwtProperties;
+import com.nayker.chat.error.TokenException;
 import io.jsonwebtoken.*;
 import org.springframework.stereotype.Component;
 
@@ -36,11 +37,11 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public String getUsername(String token) throws JwtException {
+    public String getUsername(String token) throws TokenException {
         try {
            return jwtParser.parseClaimsJws(token).getBody().getSubject();
-        } catch (JwtException e) {
-            throw new JwtException("Token invalid");
+        } catch (JwtException | IllegalArgumentException e) {
+            throw new TokenException("Token expired or invalid");
         }
     }
 }

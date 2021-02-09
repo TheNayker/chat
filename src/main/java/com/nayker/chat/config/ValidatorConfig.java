@@ -11,7 +11,7 @@ import java.util.Arrays;
 public class ValidatorConfig {
 
     @Bean
-    public PasswordValidator PasswordValidator() {
+    public PasswordValidator passwordValidator() {
         return new PasswordValidator(Arrays.asList(
                 new LengthRule(15, 35),
                 new CharacterRule(EnglishCharacterData.UpperCase, 2),

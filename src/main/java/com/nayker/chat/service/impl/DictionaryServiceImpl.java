@@ -1,4 +1,4 @@
-package com.nayker.chat.service.Impl;
+package com.nayker.chat.service.impl;
 
 import com.nayker.chat.dto.DictionaryWord;
 import com.nayker.chat.entity.DictionaryWordEntity;

@@ -6,6 +6,8 @@ import com.nayker.chat.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -29,16 +31,16 @@ public class ChatController {
     }
 
     @PostMapping("/")
-    public Message send(@Valid @RequestBody MessageRequest messageRequest) {
-        return service.send(messageRequest.getName(), messageRequest.getContent());
+    public Message send(@AuthenticationPrincipal UserDetails userDetails,
+                        @Valid @RequestBody MessageRequest messageRequest) {
+        return service.send(userDetails, messageRequest.getContent());
     }
 
     @PutMapping("/{id}")
-    public Message update(
-            @PathVariable("id") long id,
+    public Message update(@PathVariable("id") long id,
             @Valid @RequestBody MessageRequest messageRequest
     ) {
-        return service.update(id, messageRequest.getName(), messageRequest.getContent());
+        return service.update(id, messageRequest.getContent());
     }
 
     @DeleteMapping("/{id}")

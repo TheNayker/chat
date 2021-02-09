@@ -1,4 +1,4 @@
-package com.nayker.chat.service.Impl;
+package com.nayker.chat.service.impl;
 
 import com.nayker.chat.dto.Jwt;
 import com.nayker.chat.dto.User;
